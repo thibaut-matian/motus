@@ -67,7 +67,7 @@ $firstLetter = $secretWord[0];
         <button id="btn-restart" style="display: none; margin: 15px auto; padding: 10px 20px; background-color: #f1c40f; color: black; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">Rejouer 🔄</button>
 
         <!-- ==========================================
-             WALL OF FAME
+             WALL OF FAME (Actualisation dynamique)
              ========================================== -->
         <div class="wall-of-fame" style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
             <h3 style="margin-bottom: 15px;">🏆 Wall of Fame</h3>

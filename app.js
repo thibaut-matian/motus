@@ -100,14 +100,15 @@ function checkWord() {
 
     for (let i = 0; i < WORD_LENGTH; i++) {
         const cell = document.getElementById(`cell-${currentAttempt}-${i}`);
-        cell.className = 'cell ' + states[i]; // Écrase proprement les anciennes classes
+        cell.className = 'cell ' + states[i];
     }
 
     if (guessStr === SECRET_WORD) {
         messageElement.style.color = "#2ecc71";
         messageElement.innerText = "Félicitations ! Vous avez trouvé le mot ! 🎉";
+        const finalAttempts = currentAttempt + 1; // Nombre réel de lignes jouées
         currentAttempt = MAX_ATTEMPTS; 
-        endGame();
+        endGame(1, finalAttempts); // Victoire !
         return;
     }
 
@@ -123,12 +124,26 @@ function checkWord() {
     } else {
         messageElement.style.color = "#ff9f9f";
         messageElement.innerText = `Dommage ! Le mot secret était : ${SECRET_WORD}`;
-        endGame();
+        endGame(0, 6); // Défaite au bout de 6 essais
     }
 }
 
-function endGame() {
+// Envoi asynchrone des données de score à l'API PHP
+async function sendScoreToServer(won, attempts) {
+    try {
+        await fetch('api.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'save_score', won: won, attempts: attempts })
+        });
+    } catch (error) {
+        console.error("Impossible de joindre l'API pour sauvegarder le score :", error);
+    }
+}
+
+function endGame(won, attempts) {
     restartBtn.style.display = 'block';
+    sendScoreToServer(won, attempts); // Déclenchement automatique de la sauvegarde
 }
 
 restartBtn.addEventListener('click', () => {
